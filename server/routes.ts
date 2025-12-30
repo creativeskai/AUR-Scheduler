@@ -3,11 +3,6 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
-import { Resend } from 'resend';
-
-// Initialize Resend if API key is present
-const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export async function registerRoutes(
   httpServer: Server,
@@ -81,37 +76,17 @@ export async function registerRoutes(
     const overdueTasks = await storage.getOverdueTasks();
     
     if (overdueTasks.length > 0) {
-      console.log(`Found ${overdueTasks.length} overdue tasks.`);
+      console.log(`Found ${overdueTasks.length} overdue tasks:`);
+      overdueTasks.forEach(t => {
+        console.log(`  - ${t.name} (due: ${t.endDate})`);
+      });
       
-      // Send email if Resend is configured
-      if (resend) {
-        try {
-          const { data, error } = await resend.emails.send({
-            from: 'Scheduler <onboarding@resend.dev>', // Default Resend testing email
-            to: ['delivered@resend.dev'], // Default testing. User needs to configure their email.
-            subject: `Action Required: ${overdueTasks.length} Tasks Overdue`,
-            html: `
-              <h1>Overdue Tasks Alert</h1>
-              <p>The following tasks are past their deadline:</p>
-              <ul>
-                ${overdueTasks.map(t => `<li><strong>${t.name}</strong> - Due: ${new Date(t.endDate).toLocaleDateString()}</li>`).join('')}
-              </ul>
-            `
-          });
-          
-          if (error) {
-            console.error('Error sending email:', error);
-            return res.json({ count: overdueTasks.length, message: `Found ${overdueTasks.length} overdue tasks. Email failed: ${error.message}` });
-          }
-          
-          return res.json({ count: overdueTasks.length, message: `Found ${overdueTasks.length} overdue tasks. Notification email sent.` });
-        } catch (e) {
-          console.error('Exception sending email:', e);
-          return res.json({ count: overdueTasks.length, message: `Found ${overdueTasks.length} overdue tasks. Email exception.` });
-        }
-      } else {
-        return res.json({ count: overdueTasks.length, message: `Found ${overdueTasks.length} overdue tasks. Email not configured (RESEND_API_KEY missing).` });
-      }
+      // In a real app, you would send an email here using your preferred email service
+      // For now, we just log the overdue tasks
+      return res.json({ 
+        count: overdueTasks.length, 
+        message: `Found ${overdueTasks.length} overdue tasks. Check server logs for details.` 
+      });
     }
     
     res.json({ count: 0, message: 'No overdue tasks found.' });
