@@ -5,6 +5,7 @@ import { z } from "zod";
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  segment: text("segment").default("General").notNull(),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
   progress: integer("progress").default(0).notNull(),

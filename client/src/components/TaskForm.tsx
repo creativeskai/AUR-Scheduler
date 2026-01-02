@@ -33,6 +33,7 @@ export function TaskForm({ defaultValues, onSubmit, isPending, submitLabel }: Ta
     resolver: zodResolver(insertTaskSchema),
     defaultValues: {
       name: "",
+      segment: "General",
       description: "",
       status: "todo",
       progress: 0,
@@ -51,10 +52,24 @@ export function TaskForm({ defaultValues, onSubmit, isPending, submitLabel }: Ta
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="col-span-2">
+              <FormItem>
                 <FormLabel>Task Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter task name..." className="font-medium" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="segment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Segment</FormLabel>
+                <FormControl>
+                  <Input placeholder="General, Frontend, Backend..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

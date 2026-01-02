@@ -141,6 +141,7 @@ function GanttEditDialog({ task, open, onOpenChange }: { task: Task, open: boole
         <TaskForm 
           defaultValues={{
             name: task.name,
+            segment: task.segment,
             description: task.description || "",
             status: task.status as "todo" | "in-progress" | "done",
             progress: task.progress,

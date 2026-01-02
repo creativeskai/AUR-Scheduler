@@ -67,6 +67,7 @@ export function TaskListView({ tasks }: TaskListViewProps) {
         <TableHeader className="bg-muted/50">
           <TableRow>
             <TableHead className="w-[30%]">Task Name</TableHead>
+            <TableHead>Segment</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Assignee</TableHead>
             <TableHead>Timeline</TableHead>
@@ -103,6 +104,11 @@ export function TaskListView({ tasks }: TaskListViewProps) {
                       {task.description}
                     </p>
                   )}
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className="font-medium">
+                    {task.segment}
+                  </Badge>
                 </TableCell>
                 <TableCell>
                   <Badge className={`${getStatusColor(task.status)} capitalize shadow-sm`}>
