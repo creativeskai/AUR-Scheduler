@@ -18,6 +18,9 @@ export const tasks = pgTable("tasks", {
 export const insertTaskSchema = createInsertSchema(tasks).omit({ 
   id: true,
   isOverdue: true 
+}).extend({
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
 });
 
 export type Task = typeof tasks.$inferSelect;

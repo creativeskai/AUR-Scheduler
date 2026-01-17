@@ -87,7 +87,12 @@ export function TaskForm({ defaultValues, onSubmit, isPending, submitLabel }: Ta
                     type="datetime-local" 
                     {...field}
                     value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ""}
-                    onChange={(e) => field.onChange(new Date(e.target.value))}
+                    onChange={(e) => {
+                      const date = new Date(e.target.value);
+                      if (!isNaN(date.getTime())) {
+                        field.onChange(date);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -106,7 +111,12 @@ export function TaskForm({ defaultValues, onSubmit, isPending, submitLabel }: Ta
                     type="datetime-local" 
                     {...field}
                     value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ""}
-                    onChange={(e) => field.onChange(new Date(e.target.value))}
+                    onChange={(e) => {
+                      const date = new Date(e.target.value);
+                      if (!isNaN(date.getTime())) {
+                        field.onChange(date);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
