@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, buildUrl, type InsertTask } from "@shared/routes";
+import { api, buildUrl } from "@shared/routes";
+import { type InsertTask } from "@shared/schema";
 import { z } from "zod";
 
 // ============================================
